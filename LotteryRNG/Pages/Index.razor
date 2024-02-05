@@ -1,0 +1,456 @@
+﻿@page "/"
+<style>
+    body {
+        background-color: rgb(37, 48, 95);
+        color: white;
+    }
+
+    h1 {
+        font-family: "Copperplate Gothic", fantasy;
+    }
+
+    .powerball-button {
+        background-color: #29AF79;
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+    }
+
+    .megamillions-button {
+        background-color: #29AF79;
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+    }
+
+    .floridalotto-button {
+        background-color: #29AF79;
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+    }
+</style>
+
+<PageTitle>LotteryRNG</PageTitle>
+
+<h1>LotteryRNG</h1>
+
+<h3>Click the button of the lottery game you wish to play in order to generate 5 sets of random numbers</h3>
+
+<div>
+    <button class="btn btn-primary powerball-button" @onclick="CreatePowerBallNumbers">Powerball</button>
+    <button class="btn btn-primary megamillions-button" @onclick="CreateMegaMillionsNumbers">Mega Millions</button>
+    <button class="btn btn-primary floridalotto-button" @onclick="CreateFloridaLottoNumbers">Florida Lotto</button>
+</div>
+@if (powerBallNumberList.Count > 0)
+{
+    <h2>@lotteryNumber1 @lotteryNumber2 @lotteryNumber3 @lotteryNumber4 @lotteryNumber5 <span style="color: red">@lotteryNumber6</span></h2>
+    <h2>@lotteryNumber7 @lotteryNumber8 @lotteryNumber9 @lotteryNumber10 @lotteryNumber11 <span style="color: red">@lotteryNumber12</span></h2>
+    <h2>@lotteryNumber13 @lotteryNumber14 @lotteryNumber15 @lotteryNumber16 @lotteryNumber17 <span style="color: red">@lotteryNumber18</span></h2>
+    <h2>@lotteryNumber19 @lotteryNumber20 @lotteryNumber21 @lotteryNumber22 @lotteryNumber23 <span style="color: red">@lotteryNumber24</span></h2>
+    <h2>@lotteryNumber25 @lotteryNumber26 @lotteryNumber27 @lotteryNumber28 @lotteryNumber29 <span style="color: red">@lotteryNumber30</span></h2>
+    <p>*The Powerball is in red</p>
+}
+@if (megaMillionsNumberList.Count > 0)
+{
+    <h2>@lotteryNumber1 @lotteryNumber2 @lotteryNumber3 @lotteryNumber4 @lotteryNumber5 <span style="color: yellow">@lotteryNumber6</span></h2>
+    <h2>@lotteryNumber7 @lotteryNumber8 @lotteryNumber9 @lotteryNumber10 @lotteryNumber11 <span style="color: yellow">@lotteryNumber12</span></h2>
+    <h2>@lotteryNumber13 @lotteryNumber14 @lotteryNumber15 @lotteryNumber16 @lotteryNumber17 <span style="color: yellow">@lotteryNumber18</span></h2>
+    <h2>@lotteryNumber19 @lotteryNumber20 @lotteryNumber21 @lotteryNumber22 @lotteryNumber23 <span style="color: yellow">@lotteryNumber24</span></h2>
+    <h2>@lotteryNumber25 @lotteryNumber26 @lotteryNumber27 @lotteryNumber28 @lotteryNumber29 <span style="color: yellow">@lotteryNumber30</span></h2>
+    <p> *The Mega Ball is in yellow</p>
+}
+@if (floridaLottoList.Count > 0)
+{
+    <h2>@lotteryNumber1 @lotteryNumber2 @lotteryNumber3 @lotteryNumber4 @lotteryNumber5 @lotteryNumber6</h2>
+    <h2>@lotteryNumber7 @lotteryNumber8 @lotteryNumber9 @lotteryNumber10 @lotteryNumber11 @lotteryNumber12</h2>
+    <h2>@lotteryNumber13 @lotteryNumber14 @lotteryNumber15 @lotteryNumber16 @lotteryNumber17 @lotteryNumber18</h2>
+    <h2>@lotteryNumber19 @lotteryNumber20 @lotteryNumber21 @lotteryNumber22 @lotteryNumber23 @lotteryNumber24</h2>
+    <h2>@lotteryNumber25 @lotteryNumber26 @lotteryNumber27 @lotteryNumber28 @lotteryNumber29 @lotteryNumber30</h2>
+}
+
+@code {
+    public List<int> powerBallNumberList = new List<int>();
+    public List<int> megaMillionsNumberList = new List<int>();
+    public List<int> floridaLottoList = new List<int>();
+    private int randomNumber = 0;
+    private int lotteryNumber1 = 0;
+    private int lotteryNumber2 = 0;
+    private int lotteryNumber3 = 0;
+    private int lotteryNumber4 = 0;
+    private int lotteryNumber5 = 0;
+    private int lotteryNumber6 = 0;
+    private int lotteryNumber7 = 0;
+    private int lotteryNumber8 = 0;
+    private int lotteryNumber9 = 0;
+    private int lotteryNumber10 = 0;
+    private int lotteryNumber11 = 0;
+    private int lotteryNumber12 = 0;
+    private int lotteryNumber13 = 0;
+    private int lotteryNumber14 = 0;
+    private int lotteryNumber15 = 0;
+    private int lotteryNumber16 = 0;
+    private int lotteryNumber17 = 0;
+    private int lotteryNumber18 = 0;
+    private int lotteryNumber19 = 0;
+    private int lotteryNumber20 = 0;
+    private int lotteryNumber21 = 0;
+    private int lotteryNumber22 = 0;
+    private int lotteryNumber23 = 0;
+    private int lotteryNumber24 = 0;
+    private int lotteryNumber25 = 0;
+    private int lotteryNumber26 = 0;
+    private int lotteryNumber27 = 0;
+    private int lotteryNumber28 = 0;
+    private int lotteryNumber29 = 0;
+    private int lotteryNumber30 = 0;
+    private string displayNumbers = string.Empty;
+    private Random rand = new Random();
+
+    private void CreatePowerBallNumbers()
+    {
+        powerBallNumberList.Clear();
+        megaMillionsNumberList.Clear();
+        floridaLottoList.Clear();
+
+        while (powerBallNumberList.Count <= 6)
+        {
+            if (powerBallNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 26);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 69);
+            }
+
+            if (!powerBallNumberList.Contains(randomNumber))
+            {
+                powerBallNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber1 = powerBallNumberList[0];
+        lotteryNumber2 = powerBallNumberList[1];
+        lotteryNumber3 = powerBallNumberList[2];
+        lotteryNumber4 = powerBallNumberList[3];
+        lotteryNumber5 = powerBallNumberList[4];
+        lotteryNumber6 = powerBallNumberList[5];
+
+        powerBallNumberList.Clear();
+
+        while (powerBallNumberList.Count <= 6)
+        {
+            if (powerBallNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 26);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 69);
+            }
+
+            if (!powerBallNumberList.Contains(randomNumber))
+            {
+                powerBallNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber7 = powerBallNumberList[0];
+        lotteryNumber8 = powerBallNumberList[1];
+        lotteryNumber9 = powerBallNumberList[2];
+        lotteryNumber10 = powerBallNumberList[3];
+        lotteryNumber11 = powerBallNumberList[4];
+        lotteryNumber12 = powerBallNumberList[5];
+
+        powerBallNumberList.Clear();
+
+        while (powerBallNumberList.Count <= 6)
+        {
+            if (powerBallNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 26);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 69);
+            }
+
+            if (!powerBallNumberList.Contains(randomNumber))
+            {
+                powerBallNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber13 = powerBallNumberList[0];
+        lotteryNumber14 = powerBallNumberList[1];
+        lotteryNumber15 = powerBallNumberList[2];
+        lotteryNumber16 = powerBallNumberList[3];
+        lotteryNumber17 = powerBallNumberList[4];
+        lotteryNumber18 = powerBallNumberList[5];
+
+        powerBallNumberList.Clear();
+
+        while (powerBallNumberList.Count <= 6)
+        {
+            if (powerBallNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 26);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 69);
+            }
+
+            if (!powerBallNumberList.Contains(randomNumber))
+            {
+                powerBallNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber19 = powerBallNumberList[0];
+        lotteryNumber20 = powerBallNumberList[1];
+        lotteryNumber21 = powerBallNumberList[2];
+        lotteryNumber22 = powerBallNumberList[3];
+        lotteryNumber23 = powerBallNumberList[4];
+        lotteryNumber24 = powerBallNumberList[5];
+
+        powerBallNumberList.Clear();
+
+        while (powerBallNumberList.Count <= 6)
+        {
+            if (powerBallNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 26);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 69);
+            }
+
+            if (!powerBallNumberList.Contains(randomNumber))
+            {
+                powerBallNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber25 = powerBallNumberList[0];
+        lotteryNumber26 = powerBallNumberList[1];
+        lotteryNumber27 = powerBallNumberList[2];
+        lotteryNumber28 = powerBallNumberList[3];
+        lotteryNumber29 = powerBallNumberList[4];
+        lotteryNumber30 = powerBallNumberList[5];
+    }
+
+    private void CreateMegaMillionsNumbers()
+    {
+        powerBallNumberList.Clear();
+        megaMillionsNumberList.Clear();
+        floridaLottoList.Clear();
+
+        while (megaMillionsNumberList.Count <= 6)
+        {
+            if (megaMillionsNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 25);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 70);
+            }
+
+            if (!megaMillionsNumberList.Contains(randomNumber))
+            {
+                megaMillionsNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber1 = megaMillionsNumberList[0];
+        lotteryNumber2 = megaMillionsNumberList[1];
+        lotteryNumber3 = megaMillionsNumberList[2];
+        lotteryNumber4 = megaMillionsNumberList[3];
+        lotteryNumber5 = megaMillionsNumberList[4];
+        lotteryNumber6 = megaMillionsNumberList[5];
+
+        megaMillionsNumberList.Clear();
+
+        while (megaMillionsNumberList.Count <= 6)
+        {
+            if (megaMillionsNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 25);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 70);
+            }
+
+            if (!megaMillionsNumberList.Contains(randomNumber))
+            {
+                megaMillionsNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber7 = megaMillionsNumberList[0];
+        lotteryNumber8 = megaMillionsNumberList[1];
+        lotteryNumber9 = megaMillionsNumberList[2];
+        lotteryNumber10 = megaMillionsNumberList[3];
+        lotteryNumber11 = megaMillionsNumberList[4];
+        lotteryNumber12 = megaMillionsNumberList[5];
+
+        megaMillionsNumberList.Clear();
+
+        while (megaMillionsNumberList.Count <= 6)
+        {
+            if (megaMillionsNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 25);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 70);
+            }
+
+            if (!megaMillionsNumberList.Contains(randomNumber))
+            {
+                megaMillionsNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber13 = megaMillionsNumberList[0];
+        lotteryNumber14 = megaMillionsNumberList[1];
+        lotteryNumber15 = megaMillionsNumberList[2];
+        lotteryNumber16 = megaMillionsNumberList[3];
+        lotteryNumber17 = megaMillionsNumberList[4];
+        lotteryNumber18 = megaMillionsNumberList[5];
+
+        megaMillionsNumberList.Clear();
+
+        while (megaMillionsNumberList.Count <= 6)
+        {
+            if (megaMillionsNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 25);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 70);
+            }
+
+            if (!megaMillionsNumberList.Contains(randomNumber))
+            {
+                megaMillionsNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber19 = megaMillionsNumberList[0];
+        lotteryNumber20 = megaMillionsNumberList[1];
+        lotteryNumber21 = megaMillionsNumberList[2];
+        lotteryNumber22 = megaMillionsNumberList[3];
+        lotteryNumber23 = megaMillionsNumberList[4];
+        lotteryNumber24 = megaMillionsNumberList[5];
+
+        megaMillionsNumberList.Clear();
+
+        while (megaMillionsNumberList.Count <= 6)
+        {
+            if (megaMillionsNumberList.Count == 5)
+            {
+                randomNumber = rand.Next(1, 25);
+            }
+            else
+            {
+                randomNumber = rand.Next(1, 70);
+            }
+
+            if (!megaMillionsNumberList.Contains(randomNumber))
+            {
+                megaMillionsNumberList.Add(randomNumber);
+            }
+        }
+        lotteryNumber25 = megaMillionsNumberList[0];
+        lotteryNumber26 = megaMillionsNumberList[1];
+        lotteryNumber27 = megaMillionsNumberList[2];
+        lotteryNumber28 = megaMillionsNumberList[3];
+        lotteryNumber29 = megaMillionsNumberList[4];
+        lotteryNumber30 = megaMillionsNumberList[5];
+    }
+
+    private void CreateFloridaLottoNumbers()
+    {
+        powerBallNumberList.Clear();
+        megaMillionsNumberList.Clear();
+        floridaLottoList.Clear();
+
+        while (floridaLottoList.Count <= 6)
+        {
+            randomNumber = rand.Next(1, 53);
+            if (!floridaLottoList.Contains(randomNumber))
+            {
+                floridaLottoList.Add(randomNumber);
+            }
+        }
+        lotteryNumber1 = floridaLottoList[0];
+        lotteryNumber2 = floridaLottoList[1];
+        lotteryNumber3 = floridaLottoList[2];
+        lotteryNumber4 = floridaLottoList[3];
+        lotteryNumber5 = floridaLottoList[4];
+        lotteryNumber6 = floridaLottoList[5];
+
+        floridaLottoList.Clear();
+
+        while (floridaLottoList.Count <= 6)
+        {
+            randomNumber = rand.Next(1, 53);
+            if (!floridaLottoList.Contains(randomNumber))
+            {
+                floridaLottoList.Add(randomNumber);
+            }
+        }
+        lotteryNumber7 = floridaLottoList[0];
+        lotteryNumber8 = floridaLottoList[1];
+        lotteryNumber9 = floridaLottoList[2];
+        lotteryNumber10 = floridaLottoList[3];
+        lotteryNumber11 = floridaLottoList[4];
+        lotteryNumber12 = floridaLottoList[5];
+
+        floridaLottoList.Clear();
+
+        while (floridaLottoList.Count <= 6)
+        {
+            randomNumber = rand.Next(1, 53);
+            if (!floridaLottoList.Contains(randomNumber))
+            {
+                floridaLottoList.Add(randomNumber);
+            }
+        }
+        lotteryNumber13 = floridaLottoList[0];
+        lotteryNumber14 = floridaLottoList[1];
+        lotteryNumber15 = floridaLottoList[2];
+        lotteryNumber16 = floridaLottoList[3];
+        lotteryNumber17 = floridaLottoList[4];
+        lotteryNumber18 = floridaLottoList[5];
+
+        floridaLottoList.Clear();
+
+        while (floridaLottoList.Count <= 6)
+        {
+            randomNumber = rand.Next(1, 53);
+            if (!floridaLottoList.Contains(randomNumber))
+            {
+                floridaLottoList.Add(randomNumber);
+            }
+        }
+        lotteryNumber19 = floridaLottoList[0];
+        lotteryNumber20 = floridaLottoList[1];
+        lotteryNumber21 = floridaLottoList[2];
+        lotteryNumber22 = floridaLottoList[3];
+        lotteryNumber23 = floridaLottoList[4];
+        lotteryNumber24 = floridaLottoList[5];
+
+        floridaLottoList.Clear();
+
+        while (floridaLottoList.Count <= 6)
+        {
+            randomNumber = rand.Next(1, 53);
+            if (!floridaLottoList.Contains(randomNumber))
+            {
+                floridaLottoList.Add(randomNumber);
+            }
+        }
+        lotteryNumber25 = floridaLottoList[0];
+        lotteryNumber26 = floridaLottoList[1];
+        lotteryNumber27 = floridaLottoList[2];
+        lotteryNumber28 = floridaLottoList[3];
+        lotteryNumber29 = floridaLottoList[4];
+        lotteryNumber30 = floridaLottoList[5];
+    }
+}
